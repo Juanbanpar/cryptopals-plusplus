@@ -1,3 +1,41 @@
+# Build directories
+/build/
+/cmake-build-*/
+
+# CMake files
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+
+# FetchContent / dependency downloads
+/_deps/
+
+# Compile outputs
+*.o
+*.obj
+*.so
+*.a
+*.dll
+*.exe
+*.out
+
+# IDE / editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+
+# macOS
+.DS_Store
+
+# Google Test artifacts
+/Testing/**
+
+# Compilation database (optional)
+compile_commands.json
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
