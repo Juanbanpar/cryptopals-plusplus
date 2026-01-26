@@ -53,3 +53,24 @@ std::string hex_to_base64(const std::string &hex) {
   auto bytes = hex_to_bytes(hex);
   return bytes_to_base64(bytes);
 }
+
+std::string bytes_to_hex(const std::vector<unsigned char> &data) {
+  static const char table[] = "0123456789abcdef";
+  std::string out;
+  out.reserve(data.size() * 2);
+  for (unsigned char b : data) {
+    out.push_back(table[(b >> 4) & 0xF]);
+    out.push_back(table[b & 0xF]);
+  }
+  return out;
+}
+
+std::string fixed_xor_hex(const std::string &ahex, const std::string &bhex) {
+  auto a = hex_to_bytes(ahex);
+  auto b = hex_to_bytes(bhex);
+  if (a.size() != b.size()) throw std::invalid_argument("inputs must have equal length");
+  std::vector<unsigned char> out;
+  out.reserve(a.size());
+  for (size_t i = 0; i < a.size(); ++i) out.push_back(static_cast<unsigned char>(a[i] ^ b[i]));
+  return bytes_to_hex(out);
+}
