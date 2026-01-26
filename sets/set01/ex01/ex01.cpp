@@ -1,5 +1,5 @@
 #include "ex01.h"
 
-int add(int a, int b) {
-  return a + b;
-}
+// `ex01` now reuses the shared `common` utilities declared in `common.h`.
+
+
