@@ -13,4 +13,5 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+add_subdirectory(lib)
 add_subdirectory(sets)
