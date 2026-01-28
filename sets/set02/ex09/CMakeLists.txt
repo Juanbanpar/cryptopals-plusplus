@@ -1,6 +1,6 @@
 add_library(ex09_lib STATIC ex09.cpp)
 target_include_directories(ex09_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(ex09_lib PUBLIC common)
+target_link_libraries(ex09_lib PUBLIC common pkcs7)
 
 add_executable(ex09 ex09_main.cpp)
 target_link_libraries(ex09 PRIVATE ex09_lib)
