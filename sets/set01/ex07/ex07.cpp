@@ -1,35 +1,19 @@
 #include "ex07.h"
 #include "../../lib/common/common.h"
-#include <openssl/evp.h>
+#include "../../lib/aes/aes.h"
 
 #include <fstream>
-#include <stdexcept>
+#include <vector>
 
 namespace {
-std::vector<unsigned char> aes_128_ecb_decrypt(const std::vector<unsigned char> &cipher, const std::string &key) {
-  if (key.size() != 16) throw std::invalid_argument("key must be 16 bytes for AES-128");
-  EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
-  if (!ctx) throw std::runtime_error("EVP_CIPHER_CTX_new failed");
-  int rc = EVP_DecryptInit_ex(ctx, EVP_aes_128_ecb(), NULL, (const unsigned char*)key.data(), NULL);
-  if (rc != 1) { EVP_CIPHER_CTX_free(ctx); throw std::runtime_error("EVP_DecryptInit_ex failed"); }
-  EVP_CIPHER_CTX_set_padding(ctx, 1);
-  std::vector<unsigned char> out(cipher.size() + 16);
-  int outlen1 = 0;
-  if (!EVP_DecryptUpdate(ctx, out.data(), &outlen1, cipher.data(), (int)cipher.size())) {
-    EVP_CIPHER_CTX_free(ctx); throw std::runtime_error("EVP_DecryptUpdate failed");
-  }
-  int outlen2 = 0;
-  if (!EVP_DecryptFinal_ex(ctx, out.data() + outlen1, &outlen2)) {
-    EVP_CIPHER_CTX_free(ctx); throw std::runtime_error("EVP_DecryptFinal_ex failed (bad padding?)");
-  }
-  EVP_CIPHER_CTX_free(ctx);
-  out.resize(outlen1 + outlen2);
-  return out;
-}
+// Helper kept for compatibility or just inline it
 }
 
 std::string set01::ex07::decrypt_aes_128_ecb_base64(const std::vector<unsigned char> &data, const std::string &key) {
-  auto plain_bytes = aes_128_ecb_decrypt(data, key);
+  std::vector<unsigned char> key_bytes(key.begin(), key.end());
+  // AES library returns vector, we convert to string.
+  // Note: aes::decrypt_ecb expects padded input and unpads by default.
+  auto plain_bytes = aes::decrypt_ecb(data, key_bytes);
   return std::string(plain_bytes.begin(), plain_bytes.end());
 }
 
