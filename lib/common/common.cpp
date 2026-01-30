@@ -4,6 +4,8 @@
 #include <cctype>
 #include <limits>
 #include <random>
+#include <set>
+#include <functional>
 
 std::vector<unsigned char> rand_bytes(size_t n) {
   static std::random_device rd;
@@ -128,4 +130,20 @@ std::pair<unsigned char, std::string> crack_single_byte_xor_bytes(const std::vec
     }
   }
   return {best_key, best_plain};
+}
+
+// Detect whether an encryption oracle is using ECB or CBC mode.
+// The oracle should accept plaintext bytes and return ciphertext bytes.
+std::string detect_ecb_or_cbc(const std::function<std::vector<unsigned char>(const std::vector<unsigned char>&)>& oracle) {
+  const size_t block_size = 16;
+  std::vector<unsigned char> payload(block_size * 4, 'A');
+  auto ciphertext = oracle(payload);
+
+  std::set<std::string> blocks;
+  for (size_t i = 0; i + block_size <= ciphertext.size(); i += block_size) {
+    std::string block(ciphertext.begin() + i, ciphertext.begin() + i + block_size);
+    if (blocks.count(block)) return "ECB";
+    blocks.insert(block);
+  }
+  return "CBC";
 }

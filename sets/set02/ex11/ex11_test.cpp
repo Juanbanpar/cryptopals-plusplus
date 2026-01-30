@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "ex11.h"
+#include "../../lib/common/common.h"
 
 TEST(OracleDetection, 20Rounds)
 {
@@ -10,7 +11,7 @@ TEST(OracleDetection, 20Rounds)
         {
             return set02::ex11::encryption_oracle(input, &actual_mode);
         };
-        std::string detected = set02::ex11::detect_mode(oracle);
+        std::string detected = detect_ecb_or_cbc(oracle);
         EXPECT_EQ(actual_mode, detected);
     }
 }

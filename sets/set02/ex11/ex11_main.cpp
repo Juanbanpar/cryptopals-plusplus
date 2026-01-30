@@ -1,4 +1,5 @@
 #include "ex11.h"
+#include "../../lib/common/common.h"
 #include <iostream>
 
 int main()
@@ -11,7 +12,8 @@ int main()
         {
             return set02::ex11::encryption_oracle(input, &actual_mode);
         };
-        std::string detected = set02::ex11::detect_mode(oracle);
+        // detect_ecb_or_cbc is defined in lib/common
+        std::string detected = detect_ecb_or_cbc(oracle);
         std::cout << "Actual: " << actual_mode << ", Detected: " << detected << std::endl;
     }
     return 0;

@@ -48,46 +48,6 @@ namespace set02::ex11
         }
     }
 
-    std::string detect_mode(const Oracle &oracle)
-    {
-        // To detect ECB, we need at least 2 identical blocks in plaintext to produce 2 identical blocks in ciphertext (if aligned).
-        // The prefix is 5-10 bytes. The suffix is 5-10 bytes.
-        // If we send a payload of, say, 48 bytes (3 blocks) of 'A',
-        //   Prefix (5-10) + 'A'*48 + Suffix (5-10)
-        //   Total length is 58 to 68 bytes + padding.
-        //   The 'A's will definitely cover full 16-byte blocks somewhere alignment wise.
-        //   With 5-10 byte prefix, the first 'A' starts at index 5..10.
-        //   Block 0: [Prefix...A...]
-        //   Block 1: [A...A]  <-- This might not be fully A's if prefix is long?
-        //   Wait.
-        //   Prefix max 10.
-        //   We want input that guarantees at least two full blocks of identical bytes are ENCRYPTED.
-        //   If we send 43 bytes of 'A':
-        //     Prefix (5-10) + 'A'*43
-        //     Maximum prefix 10 -> 'A' starts at 10.
-        //     Bytes 10..52 are 'A'. That's 42 bytes.
-        //     Block 1 (16-31) is all 'A'.
-        //     Block 2 (32-47) is all 'A'.
-        //     Since they are identical plaintext blocks, ECB will produce identical ciphertext blocks.
-
-        std::vector<unsigned char> payload(64, 'A');
-        auto ciphertext = oracle(payload);
-
-        // Check for repeated blocks
-        std::set<std::string> blocks;
-        for (size_t i = 0; i < ciphertext.size(); i += 16)
-        {
-            if (i + 16 > ciphertext.size())
-                break;
-            std::string block(ciphertext.begin() + i, ciphertext.begin() + i + 16);
-            if (blocks.count(block))
-            {
-                return "ECB";
-            }
-            blocks.insert(block);
-        }
-
-        return "CBC";
-    }
+    // detect_mode was removed; use detect_ecb_or_cbc from lib/common instead.
 
 } // namespace set02::ex11
