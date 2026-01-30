@@ -1,8 +1,6 @@
-find_package(OpenSSL REQUIRED)
-
 add_library(ex07_lib STATIC ex07.cpp)
 target_include_directories(ex07_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(ex07_lib PUBLIC common OpenSSL::Crypto)
+target_link_libraries(ex07_lib PUBLIC common aes)
 
 add_executable(ex07 ex07_main.cpp)
 target_link_libraries(ex07 PRIVATE ex07_lib)
