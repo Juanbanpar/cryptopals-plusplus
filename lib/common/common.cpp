@@ -3,7 +3,16 @@
 
 #include <cctype>
 #include <limits>
+#include <random>
 
+std::vector<unsigned char> rand_bytes(size_t n) {
+  static std::random_device rd;
+  static std::mt19937 gen(rd());
+  static std::uniform_int_distribution<> dis(0, 255);
+  std::vector<unsigned char> out(n);
+  for (size_t i = 0; i < n; ++i) out[i] = static_cast<unsigned char>(dis(gen));
+  return out;
+}
 
 std::vector<unsigned char> hex_to_bytes(const std::string &hex) {
   std::vector<unsigned char> out;
