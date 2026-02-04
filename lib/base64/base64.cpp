@@ -45,25 +45,26 @@ std::vector<unsigned char> base64_to_bytes(const std::string &b64) {
   int pad = 0;
   for (unsigned char c : b64) {
     if (c == '=') { pad++; continue; }
-    int v = T[c];
+    int v = (c < 128) ? T[c] : -1;
     if (v >= 0) vals.push_back(v);
   }
   std::vector<unsigned char> out;
-  for (size_t i = 0; i + 3 < vals.size(); i += 4) {
+  size_t i = 0;
+  while (i + 4 <= vals.size()) {
     int v = (vals[i] << 18) | (vals[i+1] << 12) | (vals[i+2] << 6) | vals[i+3];
     out.push_back(static_cast<unsigned char>((v >> 16) & 0xFF));
     out.push_back(static_cast<unsigned char>((v >> 8) & 0xFF));
     out.push_back(static_cast<unsigned char>(v & 0xFF));
+    i += 4;
   }
-  size_t rem = vals.size() % 4;
+  size_t rem = vals.size() - i;
   if (rem == 2) {
-    int v = (vals[vals.size()-2] << 18) | (vals[vals.size()-1] << 12);
+    int v = (vals[i] << 18) | (vals[i+1] << 12);
     out.push_back(static_cast<unsigned char>((v >> 16) & 0xFF));
   } else if (rem == 3) {
-    int v = (vals[vals.size()-3] << 18) | (vals[vals.size()-2] << 12) | (vals[vals.size()-1] << 6);
+    int v = (vals[i] << 18) | (vals[i+1] << 12) | (vals[i+2] << 6);
     out.push_back(static_cast<unsigned char>((v >> 16) & 0xFF));
     out.push_back(static_cast<unsigned char>((v >> 8) & 0xFF));
   }
-  if (pad > 0 && pad <= 2) out.resize(out.size() - pad);
   return out;
 }
