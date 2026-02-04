@@ -181,16 +181,16 @@ void pkcs7_pad_vec(std::vector<uint8_t>& out, size_t block_size) {
 }
 
 void pkcs7_unpad_vec(std::vector<uint8_t>& out) {
-  if (out.empty()) return; // Should probably throw
+  if (out.empty()) throw std::runtime_error("Invalid PKCS7 padding: empty data");
   uint8_t padding_len = out.back();
   if (padding_len == 0 || padding_len > 16 || padding_len > out.size()) {
-       // Check validity: if invalid, we might throw, or just do nothing for now (or strip nothing)
-       // Standard requires all padding bytes to be the same value
-       return;
+       throw std::runtime_error("Invalid PKCS7 padding: bad padding length");
   }
   // Verify all padding bytes
   for (size_t i = 0; i < padding_len; ++i) {
-      if (out[out.size() - 1 - i] != padding_len) return; // Invalid padding
+      if (out[out.size() - 1 - i] != padding_len) {
+          throw std::runtime_error("Invalid PKCS7 padding: inconsistent padding bytes");
+      }
   }
   out.resize(out.size() - padding_len);
 }
@@ -367,6 +367,33 @@ std::vector<uint8_t> decrypt_cbc(const std::vector<uint8_t>& ciphertext, const s
   }
 
   if (unpad) pkcs7_unpad_vec(out);
+  return out;
+}
+
+std::vector<uint8_t> ctr(const std::vector<uint8_t>& data, const std::vector<uint8_t>& key, uint64_t nonce) {
+  std::vector<uint8_t> rkeys = key_expansion(key);
+  std::vector<uint8_t> out(data.size());
+
+  uint64_t block_count = 0;
+  for (size_t i = 0; i < data.size(); i += 16) {
+    // Build counter block: 64-bit LE nonce || 64-bit LE block count
+    uint8_t counter[16];
+    for (int j = 0; j < 8; ++j) counter[j] = (nonce >> (j * 8)) & 0xFF;
+    for (int j = 0; j < 8; ++j) counter[8 + j] = (block_count >> (j * 8)) & 0xFF;
+
+    // Encrypt counter to get keystream
+    uint8_t keystream[16];
+    encrypt_block(counter, keystream, rkeys.data());
+
+    // XOR keystream with data
+    size_t bytes_to_xor = std::min<size_t>(16, data.size() - i);
+    for (size_t j = 0; j < bytes_to_xor; ++j) {
+      out[i + j] = data[i + j] ^ keystream[j];
+    }
+
+    ++block_count;
+  }
+
   return out;
 }
 
