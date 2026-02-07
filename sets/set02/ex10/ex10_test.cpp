@@ -4,7 +4,7 @@
 #include "common.h"
 #include "ex10.h"
 
-TEST(DecryptAES128CBC, Solution)
+TEST(Ex10, DecryptAES128CBC)
 {
     std::string filename = std::string(PROJECT_SOURCE_DIR) + "/resources/set02/ex10/10.txt";
     std::ifstream ifs(filename);
