@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "ex14.h"
 
-TEST(BreakECBHarder, Example)
+TEST(Ex14, BreakECBHarder)
 {
     auto oracle = set02::ex14::create_oracle();
     std::string secret = set02::ex14::break_ecb_harder(oracle);
