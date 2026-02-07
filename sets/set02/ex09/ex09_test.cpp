@@ -1,7 +1,7 @@
 #include "ex09.h"
 #include <gtest/gtest.h>
 
-TEST(PKCS7Pad, Example)
+TEST(Ex09, PKCS7Pad)
 {
     std::string input = "YELLOW SUBMARINE";
     std::string expected = "YELLOW SUBMARINE\x04\x04\x04\x04";
