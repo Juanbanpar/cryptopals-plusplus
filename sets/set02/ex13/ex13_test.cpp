@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "ex13.h"
 
-TEST(ParseKv, Example)
+TEST(Ex13, ParseKv)
 {
     auto kv = set02::ex13::parse_kv("foo=bar&baz=qux&zap=zazzle");
     EXPECT_EQ(kv["foo"], "bar");
@@ -9,7 +9,7 @@ TEST(ParseKv, Example)
     EXPECT_EQ(kv["zap"], "zazzle");
 }
 
-TEST(EncryptDecrypt, Example)
+TEST(Ex13, EncryptDecrypt)
 {
     auto cipher = set02::ex13::encrypt_profile_for("foo@bar.com");
     auto p = set02::ex13::decrypt_profile(cipher);
@@ -18,7 +18,7 @@ TEST(EncryptDecrypt, Example)
     EXPECT_EQ(p.role, "user");
 }
 
-TEST(CutAndPaste, Example)
+TEST(Ex13, CutAndPaste)
 {
     auto cipher = set02::ex13::create_admin_profile();
     auto p = set02::ex13::decrypt_profile(cipher);
