@@ -47,7 +47,4 @@ namespace set02::ex11
             return aes::encrypt_cbc(data, key, iv);
         }
     }
-
-    // detect_mode was removed; use detect_ecb_or_cbc from lib/common instead.
-
 } // namespace set02::ex11
