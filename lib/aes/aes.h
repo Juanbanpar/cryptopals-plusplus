@@ -4,24 +4,25 @@
 #include <string>
 #include <cstdint>
 
-namespace aes {
+namespace aes
+{
 
-// Core block operations
-void encrypt_block(const uint8_t in[16], uint8_t out[16], const uint8_t* round_keys);
-void decrypt_block(const uint8_t in[16], uint8_t out[16], const uint8_t* round_keys);
+    // Core block operations
+    void encrypt_block(const uint8_t in[16], uint8_t out[16], const uint8_t *round_keys);
+    void decrypt_block(const uint8_t in[16], uint8_t out[16], const uint8_t *round_keys);
 
-// Key expansion for AES-128
-std::vector<uint8_t> key_expansion(const std::vector<uint8_t>& key);
+    // Key expansion for AES-128
+    std::vector<uint8_t> key_expansion(const std::vector<uint8_t> &key);
 
-// ECB Mode
-std::vector<uint8_t> encrypt_ecb(const std::vector<uint8_t>& plaintext, const std::vector<uint8_t>& key, bool pad = true);
-std::vector<uint8_t> decrypt_ecb(const std::vector<uint8_t>& ciphertext, const std::vector<uint8_t>& key, bool unpad = true);
+    // ECB Mode
+    std::vector<uint8_t> encrypt_ecb(const std::vector<uint8_t> &plaintext, const std::vector<uint8_t> &key, bool pad = true);
+    std::vector<uint8_t> decrypt_ecb(const std::vector<uint8_t> &ciphertext, const std::vector<uint8_t> &key, bool unpad = true);
 
-// CBC Mode
-std::vector<uint8_t> encrypt_cbc(const std::vector<uint8_t>& plaintext, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, bool pad = true);
-std::vector<uint8_t> decrypt_cbc(const std::vector<uint8_t>& ciphertext, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, bool unpad = true);
+    // CBC Mode
+    std::vector<uint8_t> encrypt_cbc(const std::vector<uint8_t> &plaintext, const std::vector<uint8_t> &key, const std::vector<uint8_t> &iv, bool pad = true);
+    std::vector<uint8_t> decrypt_cbc(const std::vector<uint8_t> &ciphertext, const std::vector<uint8_t> &key, const std::vector<uint8_t> &iv, bool unpad = true);
 
-// CTR Mode (encryption and decryption are identical)
-std::vector<uint8_t> ctr(const std::vector<uint8_t>& data, const std::vector<uint8_t>& key, uint64_t nonce);
+    // CTR Mode (encryption and decryption are identical)
+    std::vector<uint8_t> ctr(const std::vector<uint8_t> &data, const std::vector<uint8_t> &key, uint64_t nonce);
 
 }

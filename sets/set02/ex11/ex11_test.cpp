@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include "ex11.h"
-#include "../../lib/common/common.h"
+#include "common.h"
 
-TEST(OracleDetection, 20Rounds)
+TEST(Ex11, OracleDetection)
 {
     for (int i = 0; i < 20; ++i)
     {

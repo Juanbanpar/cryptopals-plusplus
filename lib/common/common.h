@@ -18,4 +18,4 @@ std::vector<unsigned char> rand_bytes(size_t n);
 
 // Detect whether an encryption oracle is using ECB or CBC mode.
 // The oracle should be a function that takes plaintext bytes and returns ciphertext bytes.
-std::string detect_ecb_or_cbc(const std::function<std::vector<unsigned char>(const std::vector<unsigned char>&)>& oracle);
+std::string detect_ecb_or_cbc(const std::function<std::vector<unsigned char>(const std::vector<unsigned char> &)> &oracle);

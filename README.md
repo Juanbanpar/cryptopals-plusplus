@@ -18,6 +18,10 @@ lib/
   common/
     common.h
     common.cpp
+resources/
+  set01/
+    ex04/
+      4.txt
 sets/
   set01/
     CMakeLists.txt
@@ -44,11 +48,9 @@ Requirements:
 Build and run tests:
 
 ```bash
-mkdir -p build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-cmake --build . -- -j$(nproc)
-ctest --output-on-failure
+# from repo root
+make test
+make build
 ```
 
 ## Run an exercise (CLI)
@@ -59,12 +61,9 @@ Example (run ex01 with a hex string argument):
 
 ```bash
 # from repo root
-mkdir -p build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-cmake --build . -- -j$(nproc)
+make build
 # run the ex01 CLI
-./sets/set01/ex01/ex01 49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d
+./build/sets/set01/ex01/ex01 49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d
 ```
 
 ## Library

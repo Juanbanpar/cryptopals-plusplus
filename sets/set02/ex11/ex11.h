@@ -14,6 +14,4 @@ namespace set02::ex11
     // Note: This function allows checking the used mode via the optional out_mode parameter for verification.
     std::vector<unsigned char> encryption_oracle(const std::vector<unsigned char> &input, std::string *out_mode = nullptr);
 
-    // (detection moved to lib/common: detect_ecb_or_cbc)
-
 } // namespace set02::ex11
