@@ -22,4 +22,7 @@ namespace aes
     std::vector<uint8_t> encrypt_cbc(const std::vector<uint8_t> &plaintext, const std::vector<uint8_t> &key, const std::vector<uint8_t> &iv, bool pad = true);
     std::vector<uint8_t> decrypt_cbc(const std::vector<uint8_t> &ciphertext, const std::vector<uint8_t> &key, const std::vector<uint8_t> &iv, bool unpad = true);
 
+    // CTR Mode (encryption and decryption are identical)
+    std::vector<uint8_t> ctr(const std::vector<uint8_t> &data, const std::vector<uint8_t> &key, uint64_t nonce);
+
 }
