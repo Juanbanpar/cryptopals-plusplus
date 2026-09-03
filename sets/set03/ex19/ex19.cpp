@@ -2,6 +2,7 @@
 #include "common.h"
 #include "aes.h"
 #include <algorithm>
+#include <cctype>
 
 namespace set03::ex19
 {
@@ -61,6 +62,26 @@ namespace set03::ex19
                 initialized = true;
             }
         }
+
+        double score_column(const std::string &text, size_t position)
+        {
+            double score = score_english(text);
+            const bool uppercase_expected = position == 0;
+
+            // score_english intentionally ignores case. Use the position in a
+            // plaintext line to resolve the otherwise indistinguishable case
+            // choice without changing the shared scorer.
+            for (unsigned char c : text)
+            {
+                if (!std::isalpha(c))
+                    continue;
+
+                const bool uppercase = std::isupper(c);
+                score += uppercase == uppercase_expected ? 0.01 : -0.01;
+            }
+
+            return score;
+        }
     }
 
     std::vector<std::vector<unsigned char>> encrypt_plaintexts()
@@ -112,7 +133,7 @@ namespace set03::ex19
                 for (unsigned char c : column)
                     decrypted += (char)(c ^ key);
 
-                double score = score_english(decrypted);
+                double score = score_column(decrypted, pos);
                 if (score > best_score)
                 {
                     best_score = score;
