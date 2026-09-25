@@ -61,6 +61,7 @@ namespace set06::dsa
     );
 
     bignum::BigUint message_hash(const std::vector<unsigned char> &message);
+    bignum::BigUint message_hash(const std::string &message);
     bignum::BigUint subtract_mod(
         const bignum::BigUint &left,
         const bignum::BigUint &right,

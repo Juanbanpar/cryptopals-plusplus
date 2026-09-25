@@ -70,6 +70,11 @@ namespace set06::dsa
         return bignum::BigUint::from_bytes_be(sha1::digest(message));
     }
 
+    bignum::BigUint message_hash(const std::string &message)
+    {
+        return message_hash(std::vector<unsigned char>(message.begin(), message.end()));
+    }
+
     bignum::BigUint subtract_mod(
         const bignum::BigUint &left,
         const bignum::BigUint &right,
